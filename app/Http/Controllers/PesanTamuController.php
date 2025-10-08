@@ -25,6 +25,19 @@ class PesanTamuController extends Controller
         return redirect('/bukutamu')->with('success', 'Pesan Anda telah terkirim!');
     }
 
+    // Admin methods
+    public function adminIndex()
+    {
+        $daftar_pesan = PesanTamu::latest()->paginate(10);
+        return view('admin.bukutamu.index', compact('daftar_pesan'));
+    }
+
+    public function destroy(PesanTamu $pesanTamu)
+    {
+        $pesanTamu->delete();
+        return redirect()->route('bukutamu.admin.index')->with('success', 'Pesan berhasil dihapus!');
+    }
+
     // public function create()
     // {
     //     return view('buku-tamu.create');
