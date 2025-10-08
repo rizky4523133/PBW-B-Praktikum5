@@ -3,7 +3,6 @@
 Aplikasi website sekolah berbasis Laravel yang menampilkan informasi kegiatan sekolah dan fitur buku tamu digital untuk SMP Mentari Ceria.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12">
   <img src="https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.2">
   <img src="https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite">
@@ -281,6 +280,8 @@ Edit file `resources/views/home.blade.php` dan tambahkan card baru:
 
 ## 🧪 Testing
 
+Aplikasi ini menggunakan **Pest PHP** sebagai testing framework dengan coverage lengkap untuk fitur Buku Tamu.
+
 ### Menjalankan Tests
 
 ```bash
@@ -292,16 +293,131 @@ composer test
 
 # Menggunakan Pest langsung
 ./vendor/bin/pest
+
+# Menjalankan test spesifik
+php artisan test --filter=PesanTamuTest
+
+# Menjalankan hanya Feature tests
+php artisan test tests/Feature
+
+# Menjalankan hanya Unit tests
+php artisan test tests/Unit
+```
+
+### Test Coverage
+
+#### **Feature Tests** (`tests/Feature/PesanTamuTest.php`)
+
+Test yang menguji keseluruhan flow aplikasi:
+
+✅ **Akses Halaman**
+- Halaman buku tamu dapat diakses
+- View dan data ditampilkan dengan benar
+
+✅ **CRUD Operations**
+- Dapat menyimpan pesan tamu dengan data valid
+- Dapat menampilkan daftar pesan tamu
+- Pesan ditampilkan berurutan dari yang terbaru
+
+✅ **Validasi Form**
+- Validasi nama wajib diisi
+- Validasi email wajib diisi
+- Validasi email harus format yang benar
+- Validasi pesan wajib diisi
+- Validasi maksimal panjang nama (255 karakter)
+- Validasi maksimal panjang email (255 karakter)
+
+✅ **Edge Cases**
+- Old input tetap ada setelah validasi gagal
+- Form menampilkan pesan kosong jika belum ada data
+- Dapat mengirim pesan dengan nama yang mengandung karakter khusus
+- Dapat mengirim pesan dengan teks panjang
+
+**Total: 14 Feature Tests**
+
+#### **Unit Tests** (`tests/Unit/PesanTamuTest.php`)
+
+Test yang menguji Model secara isolated:
+
+✅ **Model Properties**
+- Model adalah instance dari Eloquent Model
+- Fillable attributes terdefinisi dengan benar
+- Model memiliki table name yang benar
+- Model memiliki primary key yang benar
+
+✅ **Mass Assignment**
+- Model memiliki atribut nama yang dapat diisi
+- Model memiliki atribut email yang dapat diisi
+- Model memiliki atribut pesan yang dapat diisi
+- Model dapat menggunakan fill method
+- Model dapat membuat instance dengan constructor array
+
+✅ **Attribute Management**
+- Model dapat set individual attributes
+- Model dapat get attributes dengan method getAttribute
+- Model dapat set attributes dengan method setAttribute
+
+✅ **Data Types & Length**
+- Model dapat menyimpan nama dengan panjang 255 karakter
+- Model dapat menyimpan email dengan format panjang
+- Model dapat menyimpan pesan dengan teks yang sangat panjang
+- Model dapat menyimpan karakter khusus dalam nama
+- Model dapat menyimpan unicode characters
+
+✅ **Serialization**
+- Model dapat mengkonversi ke array
+- Model dapat mengkonversi ke JSON
+
+**Total: 19 Unit Tests**
+
+### Test Statistics
+
+```
+Tests:    35 passed (84 assertions)
+Duration: ~1.3s
 ```
 
 ### Membuat Test Baru
 
 ```bash
 # Membuat feature test
-php artisan make:test PesanTamuTest
+php artisan make:test NamaTest
 
 # Membuat unit test
-php artisan make:test PesanTamuTest --unit
+php artisan make:test NamaTest --unit
+
+# Membuat test dengan Pest
+php artisan make:test NamaTest --pest
+```
+
+### Contoh Test Case
+
+**Feature Test Example:**
+```php
+test('dapat menyimpan pesan tamu dengan data yang valid', function () {
+    $data = [
+        'nama' => 'John Doe',
+        'email' => 'john@example.com',
+        'pesan' => 'Terima kasih!',
+    ];
+
+    $response = $this->post('/bukutamu', $data);
+
+    $response->assertRedirect('/bukutamu');
+    $response->assertSessionHas('success');
+    $this->assertDatabaseHas('pesan_tamus', $data);
+});
+```
+
+**Unit Test Example:**
+```php
+test('fillable attributes terdefinisi dengan benar', function () {
+    $fillable = (new PesanTamu())->getFillable();
+
+    expect($fillable)->toContain('nama');
+    expect($fillable)->toContain('email');
+    expect($fillable)->toContain('pesan');
+});
 ```
 
 ## 📝 Commands Yang Tersedia
