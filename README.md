@@ -75,60 +75,34 @@ Pastikan sistem Anda memiliki:
 
 ### 1. Clone Repository
 
-```bash
-git clone https://github.com/adiwp/pbw.git
-cd pbw/2025/smpmentari
-```
+<img width="678" height="122" alt="image" src="https://github.com/user-attachments/assets/4a0a05f9-92d4-4290-b8db-66b6ace0c527" />
+
 
 ### 2. Install Dependencies
 
-```bash
-# Install PHP dependencies
-composer install
+<img width="780" height="411" alt="image" src="https://github.com/user-attachments/assets/7b6ffadd-0896-4a58-94cd-9ce338889db9" />
+
 
 # Install Node dependencies
-npm install
-```
 
 ### 3. Setup Environment
+Copy file .env dan Generate application key
+<img width="932" height="743" alt="image" src="https://github.com/user-attachments/assets/d2bf4e4f-c979-41ce-8928-95c866032073" />
 
-```bash
-# Copy file .env
-cp .env.example .env
-
-# Generate application key
-php artisan key:generate
-```
 
 ### 4. Setup Database
+Buat file database SQLite dan Jalankan migrasi
 
-```bash
-# Buat file database SQLite (jika belum ada)
-touch database/database.sqlite
-
-# Jalankan migrasi
-php artisan migrate
-```
+<img width="932" height="743" alt="image" src="https://github.com/user-attachments/assets/d2bf4e4f-c979-41ce-8928-95c866032073" />
 
 ### 5. Build Assets
 
-```bash
-# Development
-npm run dev
+<img width="1482" height="657" alt="image" src="https://github.com/user-attachments/assets/37799771-9f4c-4070-a0c2-446dc13468cb" />
 
-# Production
-npm run build
-```
 
 ### 6. Jalankan Aplikasi
 
-```bash
-# Menggunakan built-in server
-php artisan serve
-
-# Atau menggunakan composer script (recommended)
-composer dev
-```
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/97ad09c3-08ee-42b0-9c9f-0de913d71636" />
 
 Aplikasi akan berjalan di: `http://localhost:8000`
 
